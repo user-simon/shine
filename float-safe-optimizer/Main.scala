@@ -15,7 +15,14 @@ object Main {
     val typedExpr = untypedExpr.toExpr
     val optimizedExpr = Optimize(typedExpr)
     println(optimizedExpr)
-    val code = gen.openmp.function.asStringFromExpr(optimizedExpr)
+    val raw_code = gen.openmp.function.asStringFromExpr(optimizedExpr)
+
+    // add math.h include since this is needed in many applications
+    val code = s"""
+      |#include <math.h>
+      |$raw_code
+      |""".stripMargin
+    
     util.writeToPath(outputPath, code)
   }
 
