@@ -23,8 +23,6 @@ object Main {
       |#include <math.h>
       |$code_tail
       |""".stripMargin
-    println(optimizedExpr)
-
     util.writeToPath(outputPath, code)
   }
 
