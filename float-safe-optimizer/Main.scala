@@ -13,16 +13,18 @@ object Main {
     val exprSource = util.readFile(exprSourcePath)
     val untypedExpr = parseExpr(prefixImports(exprSource))
     val typedExpr = untypedExpr.toExpr
+    println("typedExpr", typedExpr)
     val optimizedExpr = Optimize(typedExpr)
-    println(optimizedExpr)
-    val raw_code = gen.openmp.function.asStringFromExpr(optimizedExpr)
+    println("optimizedExpr", optimizedExpr)
+    val code_tail = gen.openmp.function.asStringFromExpr(optimizedExpr)
 
     // add math.h include since this is needed in many applications
     val code = s"""
       |#include <math.h>
-      |$raw_code
+      |$code_tail
       |""".stripMargin
-    
+    println(optimizedExpr)
+
     util.writeToPath(outputPath, code)
   }
 
