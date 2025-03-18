@@ -162,4 +162,12 @@ object HighLevelConstructs {
 
   def slideVectors(n: Nat): ToBeTyped[Expr] =
     slide(n)(1) >> join >> asVector(n)
+
+  def min(v: ToBeTyped[Expr]): ToBeTyped[Expr] = v |> reduce(
+    fun(acc => fun(x => select(lt(acc)(x))(acc)(x) ))
+  )(v |> take(1) |> rise.core.primitives.idx(lidx(0, 1)))
+
+  def max(v: ToBeTyped[Expr]): ToBeTyped[Expr] = v |> reduce(
+    fun(acc => fun(x => select(gt(acc)(x))(acc)(x) ))
+  )(v |> take(1) |> rise.core.primitives.idx(lidx(0, 1)))
 }
